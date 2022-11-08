@@ -1,14 +1,21 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { Screen1 } from '../screens/Screen1';
-import { Screen2 } from '../screens/Screen2';
+import HomeScreen from '../screens/HomeScreen';
+import { DetailScreen } from '../screens/DetailScreen';
 
 const Stack = createStackNavigator();
 
 function Navigation() {
     return (
-        <Stack.Navigator>
-        <Stack.Screen name="Home" component={Screen1} />
-        <Stack.Screen name="Notifications" component={Screen2} />
+        <Stack.Navigator
+            screenOptions={{
+                headerShown: false,
+                cardStyle: {
+                    backgroundColor: 'white'
+                }
+            }}
+        >
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Notifications" component={DetailScreen} />
         </Stack.Navigator>
     );
 }
