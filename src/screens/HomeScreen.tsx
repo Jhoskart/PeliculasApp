@@ -1,13 +1,14 @@
 import React from 'react'
 import Carousel from 'react-native-snap-carousel';
-import { View, Text, ActivityIndicator, Dimensions, FlatList } from 'react-native'
+import { View, Text, ActivityIndicator, Dimensions, FlatList, ScrollView } from 'react-native'
 import { useMovies } from '../hooks/useMovies'
 import { MoviePoster } from '../components/MoviePoster'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { HorizontalSlider } from '../components/HorizontalSlider';
 
 const HomeScreen = () => {
 
-    const { peliculasEnCine, isLoading } = useMovies();
+    const { nowPlaying, popular, topRated, upcoming, isLoading } = useMovies();
     const {top} = useSafeAreaInsets();
     const { width: windowWidth } = Dimensions.get('window');
 
@@ -24,45 +25,38 @@ const HomeScreen = () => {
     }
 
     return (
-        <View style={{
-            marginTop: top + 20,
-        }}>
-            {/* <MoviePoster 
-                movie={peliculasEnCine[0]}
-            /> */}
+        <ScrollView>
             <View style={{
-                height: 440,
+                marginTop: top + 20,
             }}>
-            {/* Carousel Principal */}
-            <Carousel
-                data={peliculasEnCine}
-                renderItem={({item}: any) => <MoviePoster movie={item} />}
-                sliderWidth={windowWidth}
-                itemWidth={300}
-            />
-            </View>
-
-            {/* Peliculas Populares */}
-            <View style={{
-                height: 260,
-            }}>
-                <Text style={{
-                    fontSize: 30,
-                    fontWeight: 'bold',
-                    marginLeft: 8,
-                }}>Populares</Text>
-
-                <FlatList 
-                    data={peliculasEnCine}
+                {/* <MoviePoster 
+                    movie={peliculasEnCine[0]}
+                /> */}
+                <View style={{
+                    height: 440,
+                }}>
+                {/* Carousel Principal */}
+                <Carousel
+                    data={nowPlaying!}
                     renderItem={({item}: any) => <MoviePoster movie={item} />}
-                    keyExtractor={(item) => item.id.toString()}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
+                    sliderWidth={windowWidth}
+                    itemWidth={300}
+                    inactiveSlideOpacity={0.5}
                 />
+                </View>
+
+                {/* Peliculas populares */}
+                <HorizontalSlider title="Populares" movies={popular!} />
+
+                {/* Peliculas mejor valoradas */}
+                <HorizontalSlider title="Mejor valoradas" movies={topRated!} />
+
+                {/* Peliculas proximamente */}
+                <HorizontalSlider title="Proximamente" movies={upcoming!} />
+
+
             </View>
-
-
-        </View>
+        </ScrollView>
     )
 }
 
